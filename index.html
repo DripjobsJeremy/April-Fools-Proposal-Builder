@@ -500,22 +500,67 @@
     #punchlineModal {
       background: #fff;
       border-radius: 16px;
-      width: 440px;
+      width: 380px;
       max-width: 96vw;
       box-shadow: 0 28px 64px rgba(0,0,0,0.28);
       overflow: hidden;
       animation: modalIn 0.2s ease-out;
       text-align: center;
     }
+
+    /* Header — matches calc modal purple */
     .punch-header {
-      background: linear-gradient(135deg, #F59E0B 0%, #EF4444 100%);
-      padding: 30px 24px 22px;
+      background: linear-gradient(135deg, #7C3AED 0%, #4C1D95 100%);
+      padding: 18px 20px 20px;
       color: #fff;
+      position: relative;
     }
+    .punch-feature-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 20px;
+      padding: 3px 11px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .punch-close {
+      position: absolute;
+      top: 12px; right: 14px;
+      background: rgba(255,255,255,0.18);
+      border: none;
+      border-radius: 50%;
+      width: 28px; height: 28px;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+    }
+    .punch-close:hover { background: rgba(255,255,255,0.32); }
+    .punch-header-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin: 0 0 3px;
+      letter-spacing: -0.3px;
+    }
+    .punch-header-sub {
+      font-size: 11px;
+      opacity: 0.75;
+      margin: 0;
+    }
+
+    /* Body */
+    .punch-body { padding: 24px 24px 8px; }
     .punch-emoji {
       font-size: 52px;
       display: block;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       animation: wiggle 0.5s ease-in-out 0.15s both;
     }
     @keyframes wiggle {
@@ -525,45 +570,63 @@
       60% { transform: rotate(-8deg); }
       80% { transform: rotate(8deg); }
     }
-    .punch-title { font-size: 26px; font-weight: 800; margin: 0 0 5px; letter-spacing: -0.5px; }
-    .punch-sub { font-size: 13.5px; opacity: 0.92; margin: 0; }
-    .punch-body { padding: 22px 28px 4px; }
-    .punch-body p { font-size: 14px; color: #374151; line-height: 1.65; margin-bottom: 12px; }
+    .punch-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #111827;
+      margin: 0 0 12px;
+      letter-spacing: -0.4px;
+    }
+    .punch-body p {
+      font-size: 13.5px;
+      color: #374151;
+      line-height: 1.65;
+      margin-bottom: 12px;
+    }
+    .punch-body p.punch-unless {
+      font-style: italic;
+      color: #6B7280;
+      font-size: 13px;
+    }
     .backlog-note {
       background: #F0FDF4;
       border: 1px solid #BBF7D0;
       border-radius: 8px;
-      padding: 12px 16px;
+      padding: 11px 14px;
       font-size: 13px;
       color: #065F46;
       font-style: italic;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: background 0.15s;
+      text-align: left;
+    }
+    .backlog-note:hover { background: #DCFCE7; }
+    .april-pill {
+      display: inline-block;
+      background: #FFFBEB;
+      border: 1.5px solid #FDE68A;
+      color: #92400E;
+      border-radius: 20px;
+      padding: 7px 18px;
+      font-size: 13px;
+      font-weight: 600;
       margin-bottom: 4px;
     }
-    .punch-actions { padding: 16px 28px 24px; display: flex; flex-direction: column; gap: 10px; }
-    .btn-punch-backlog {
+    .punch-actions { padding: 16px 24px 24px; }
+    .btn-punch-dismiss {
+      width: 100%;
       background: var(--dj-purple);
       color: #fff;
       border: none;
       border-radius: 8px;
-      padding: 12px 20px;
+      padding: 13px 20px;
       font-size: 14px;
       font-weight: 700;
       cursor: pointer;
       transition: background 0.15s;
     }
-    .btn-punch-backlog:hover { background: var(--dj-purple-dark); }
-    .btn-punch-dismiss {
-      background: #fff;
-      color: var(--dj-gray);
-      border: 1.5px solid var(--dj-border);
-      border-radius: 8px;
-      padding: 11px 20px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .btn-punch-dismiss:hover { border-color: #9CA3AF; color: #374151; }
+    .btn-punch-dismiss:hover { background: var(--dj-purple-dark); }
 
     /* ─── Toast ─── */
     .toast-wrap {
@@ -793,27 +856,31 @@
 <div id="punchlineOverlay">
   <div id="punchlineModal">
     <div class="punch-header">
-      <span class="punch-emoji">&#x1F602;</span>
-      <div class="punch-title">April Fools!</div>
+      <button type="button" class="punch-close" id="punchDismiss">&#x2715;</button>
+      <div class="punch-feature-badge">&#x2B50; &#x2728; New Feature &mdash; April 2026</div>
+      <div class="punch-header-title">Production Rate Calculator&trade;</div>
+      <p class="punch-header-sub">Powered by DripJobs IntelliDimension Engine 3.0</p>
     </div>
     <div class="punch-body">
+      <span class="punch-emoji">&#x1F389;</span>
+      <div class="punch-title">April Fools!</div>
       <p>
-        &#x1F389; Congratulations &mdash; you've just test-driven the <strong>DripJobs Production Rate Calculator&trade;</strong>,
-        powered by the most sophisticated multiplication engine known to the field service industry.
+        Congratulations &mdash; you've just test-driven the <strong>DripJobs Production Rate Calculator&trade;</strong>,
+        powered by the most sophisticated multiplication engine in the world.
       </p>
-      <div class="backlog-note">
+      <div class="backlog-note" id="punchBacklog">
         &#x1F5D2;&#xFE0F; "Dimension-based area creation" has been added to the Q4 roadmap. Ticket #INT-4201. Priority: <em>to be determined</em>.
       </div>
-      <p style="margin-top:14px;margin-bottom:0;">
-        Happy April 1st from the DripJobs Team! &hellip;unless you really want us to. We'll add it to the backlog.
+      <p class="punch-unless">
+        &hellip;Unless you really want us to. We'll add it to the backlog.
       </p>
+      <div>
+        <span class="april-pill">&#x1F5D2;&#xFE0F; Happy April 1st from the DripJobs Team</span>
+      </div>
     </div>
     <div class="punch-actions">
-      <button type="button" class="btn-punch-backlog" id="punchBacklog">
-        &#x1F680; Ship it anyway &mdash; I believe in this
-      </button>
-      <button type="button" class="btn-punch-dismiss" id="punchDismiss">
-        Back to the real proposal builder
+      <button type="button" class="btn-punch-dismiss" id="punchBack">
+        Back to Proposal Builder
       </button>
     </div>
   </div>
@@ -965,8 +1032,12 @@ $(function () {
   });
 
   /* ── Punchline actions ── */
-  $('#punchDismiss').on('click', function () { $('#punchlineOverlay').removeClass('active'); });
+  // X close + "Back to Proposal Builder" button both dismiss
+  $('#punchDismiss, #punchBack').on('click', function () {
+    $('#punchlineOverlay').removeClass('active');
+  });
 
+  // Backlog note is an easter egg — clicking it fires the toast
   $('#punchBacklog').on('click', function () {
     $('#punchlineOverlay').removeClass('active');
     var $t = $('#toastWrap');
