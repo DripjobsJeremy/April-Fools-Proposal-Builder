@@ -728,6 +728,45 @@
     }
     .btn-welcome-cta:hover .arrow { transform: translateX(3px); }
 
+    /* ─── Add Area pointer arrow ─── */
+    #addAreaPointer {
+      display: none;
+      position: absolute;
+      z-index: 500;
+      pointer-events: none;
+      align-items: center;
+      gap: 6px;
+    }
+    #addAreaPointer.visible { display: flex; }
+    .pointer-label {
+      background: var(--dj-purple);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 20px;
+      white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(124,58,237,0.45);
+      animation: labelPop 0.3s cubic-bezier(0.34,1.4,0.64,1) both;
+    }
+    @keyframes labelPop {
+      from { opacity: 0; transform: scale(0.8); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    .pointer-arrow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: bounceDown 0.9s ease-in-out infinite;
+    }
+    .pointer-arrow svg {
+      filter: drop-shadow(0 2px 6px rgba(124,58,237,0.5));
+    }
+    @keyframes bounceDown {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(8px); }
+    }
+
     /* ─── Toast ─── */
     .toast-wrap {
       position: fixed;
@@ -882,6 +921,16 @@
 
 </div><!-- /page-wrap -->
 
+<!-- Animated pointer shown after welcome modal dismissal -->
+<div id="addAreaPointer">
+  <span class="pointer-label">Click &ldquo;Add Area&rdquo; ✨</span>
+  <div class="pointer-arrow">
+    <svg width="22" height="28" viewBox="0 0 22 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11 0 L11 20 M11 20 L4 13 M11 20 L18 13" stroke="#7C3AED" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+</div>
+
 
 <!-- ══════════════════════════════════════════
      JOKE MODAL — Production Rate Calculator™
@@ -1027,8 +1076,31 @@ $(function () {
   setTimeout(function () {
     $('#welcomeOverlay').addClass('active');
   }, 400);
+
+  function positionPointer() {
+    var $btn   = $('#addAreaBtn');
+    var offset = $btn.offset();
+    var $p     = $('#addAreaPointer');
+    var pW     = $p.outerWidth() || 180;
+    // Center the pointer above the button
+    $p.css({
+      top:  offset.top - 62,
+      left: offset.left + ($btn.outerWidth() / 2) - (pW / 2)
+    });
+  }
+
   $('#welcomeBtn').on('click', function () {
     $('#welcomeOverlay').removeClass('active');
+    var $p = $('#addAreaPointer');
+    $p.addClass('visible');
+    positionPointer();
+    $(window).on('resize.pointer scroll.pointer', positionPointer);
+  });
+
+  // Hide pointer as soon as Add Area is clicked
+  $('#addAreaBtn').on('click.pointer', function () {
+    $('#addAreaPointer').removeClass('visible');
+    $(window).off('resize.pointer scroll.pointer');
   });
 
   /* ── Calculator state ── */
